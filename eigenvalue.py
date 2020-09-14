@@ -1,8 +1,7 @@
 import numpy as np
-import pytest
 
 
-def power_method(A: np.matrix, epsilon=0.00001, max_iteration=1000):
+def power_method(A: np.ndarray, epsilon=0.00001, max_iteration=1000):
     last_eigenvalue = None
     cur_eigenvalue = None
     v = np.random.rand(A.shape[0], 1)
@@ -17,6 +16,3 @@ def power_method(A: np.matrix, epsilon=0.00001, max_iteration=1000):
     return (cur_eigenvalue, v)
 
 
-A = np.matrix([[6, 5], [1, 2]])
-max_eigenvalue, eigenvector = power_method(A)
-assert pytest.approx(max_eigenvalue, 7)
