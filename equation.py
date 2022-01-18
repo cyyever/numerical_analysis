@@ -24,3 +24,17 @@ def fixed_point_iteration(f: Callable, x: Real, step_number: int) -> Real:
     for _ in range(step_number):
         x = f(x)
     return x
+
+
+def n_th_root(x: Real, n: int) -> Real:
+    assert n > 0
+    if x == 0:
+        return x
+    assert x > 0
+    return fixed_point_iteration(
+        lambda a: (n - 1) * a / n + x / (n * a ** (n - 1)), 1.0, 10
+    )
+
+
+def sqrt(x: Real) -> Real:
+    return n_th_root(x, 2)
