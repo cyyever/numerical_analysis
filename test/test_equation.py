@@ -12,7 +12,7 @@ def test_bisection():
 
 
 def test_fixed_point_iteration():
-    x = fixed_point_iteration(math.cos, 1, 20)
+    x = fixed_point_iteration(math.cos, 1)
     assert pytest.approx(x, 0.739085133)
 
 
