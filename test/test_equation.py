@@ -1,7 +1,8 @@
 import math
 
 import pytest
-from equation import bisection, fixed_point_iteration, n_th_root, sqrt
+from equation import (bisection, fixed_point_iteration, n_th_root,
+                      newton_method, sqrt)
 from polynomial import Polynomial
 
 
@@ -21,3 +22,8 @@ def test_n_th_root():
     assert pytest.approx(x, 1.414)
     x = n_th_root(2, 3)
     assert pytest.approx(x, 1.2599)
+
+
+def test_newton_method():
+    x = newton_method(lambda x: x ** 3 + x - 1, lambda x: 3 * x ** 2 + 1, -0.7)
+    assert pytest.approx(x, 0.6823)
