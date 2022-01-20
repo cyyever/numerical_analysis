@@ -28,8 +28,7 @@ def test_n_th_root():
 
 def test_newton_method():
     f = Polynomial([-1, 1, 0, 1])
-    derivative = Polynomial([1, 0, 3])
-    x = newton_method(f, derivative, -0.7)
+    x = newton_method(f, f.derivative(), -0.7)
     assert pytest.approx(x, 0.6823)
 
 
