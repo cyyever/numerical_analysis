@@ -2,7 +2,7 @@ import math
 
 import pytest
 from equation import (bisection, fixed_point_iteration, n_th_root,
-                      newton_method, sqrt)
+                      newton_method, secant_method, sqrt)
 from polynomial import Polynomial
 
 
@@ -26,4 +26,9 @@ def test_n_th_root():
 
 def test_newton_method():
     x = newton_method(lambda x: x ** 3 + x - 1, lambda x: 3 * x ** 2 + 1, -0.7)
+    assert pytest.approx(x, 0.6823)
+
+
+def test_secant_method():
+    x = secant_method(lambda x: x ** 3 + x - 1, 0, 1)
     assert pytest.approx(x, 0.6823)

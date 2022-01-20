@@ -1,10 +1,9 @@
-from numbers import Real
 from typing import Callable
 
 epsilon = 1e-8
 
 
-def bisection(f: Callable, a: Real, b: Real) -> Real | None:
+def bisection(f: Callable, a: float, b: float) -> float | None:
     """find a root of equation f in the interval [a,b]. Return None when no root is found."""
     assert a <= b
     if f(a) * f(b) > 0:
@@ -20,13 +19,13 @@ def bisection(f: Callable, a: Real, b: Real) -> Real | None:
     return a
 
 
-def fixed_point_iteration(f: Callable, x: Real, step_number: int=10) -> Real:
+def fixed_point_iteration(f: Callable, x: float, step_number: int = 10) -> float:
     for _ in range(step_number):
         x = f(x)
     return x
 
 
-def n_th_root(x: Real, n: int, **kwargs) -> Real:
+def n_th_root(x: float, n: int, **kwargs: dict) -> float:
     assert n > 0
     if x == 0:
         return x
@@ -36,9 +35,25 @@ def n_th_root(x: Real, n: int, **kwargs) -> Real:
     )
 
 
-def sqrt(x: Real, **kwargs) -> Real:
+def sqrt(x: float, **kwargs: dict) -> float:
     return n_th_root(x, 2, **kwargs)
 
 
-def newton_method(f: Callable, derivative: Callable, x: Real, **kwargs):
+def newton_method(f: Callable, derivative: Callable, x: float, **kwargs) -> float:
     return fixed_point_iteration(lambda a: a - f(a) / derivative(a), x, **kwargs)
+
+
+def __two_guess_iteration(
+    f: Callable, x_0: float, x_1: float, step_number: int = 10
+) -> float:
+    for _ in range(step_number):
+        tmp = x_1
+        x_1 = f(x_0, x_1)
+        x_1 = tmp
+    return x_1
+
+
+def secant_method(f: Callable, x_0: float, x_1: float, **kwargs: dict) -> float:
+    return __two_guess_iteration(
+        lambda a, b: b - f(b)*(b - a) / (f(b) - f(a)), x_0, x_1, **kwargs
+    )
