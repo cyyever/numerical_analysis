@@ -27,12 +27,15 @@ def test_n_th_root():
 
 
 def test_newton_method():
-    x = newton_method(lambda x: x ** 3 + x - 1, lambda x: 3 * x ** 2 + 1, -0.7)
+    f = Polynomial([-1, 1, 0, 1])
+    derivative = Polynomial([1, 0, 3])
+    x = newton_method(f, derivative, -0.7)
     assert pytest.approx(x, 0.6823)
 
 
 def test_secant_method():
-    x = secant_method(lambda x: x ** 3 + x - 1, 0, 1)
+    f = Polynomial([-1, 1, 0, 1])
+    x = secant_method(f, 0, 1)
     assert pytest.approx(x, 0.6823)
 
 
