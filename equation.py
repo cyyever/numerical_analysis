@@ -1,23 +1,37 @@
+import math
 from typing import Callable
 
 
 def __interval_method(
-    f: Callable, next_point_formula: Callable, a: float, b: float, epsilon=1e-8
+    f: Callable,
+    next_point_formula: Callable,
+    a: float,
+    b: float,
+    epsilon=1e-8,
+    step_number=1000,
 ) -> float | None:
     """find a root of equation f in the interval [a,b]. Return None when no root is found."""
     assert a <= b
     if f(a) * f(b) > 0:
         return None
-    while b - a > epsilon:
-        c = next_point_formula(a, b)
-        # c = (a + b) / 2
+    c = a
+    for _ in range(step_number):
+        if b - a > epsilon:
+            break
+        res = next_point_formula(a, b)
+        match res:
+            case list():
+                a, b, c = res
+            case _:
+                c = res
+
         if f(c) == 0:
             return c
         if f(a) * f(c) < 0:
             b = c
         else:
             a = c
-    return a
+    return c
 
 
 def bisection_method(f: Callable, a: float, b: float, **kwargs) -> float | None:
@@ -88,3 +102,46 @@ def inverse_quadratic_interpolation_method(
         )
 
     return __n_guess_iteration(__formula, guesses=(a, b, c), **kwargs)
+
+
+def brend_method(f: Callable, a: float, b: float, **kwargs) -> float | None:
+    min_backward_error = min(math.fabs(f(a)), math.fabs(f(b)))
+    last_three_guess = None
+
+    def criterion(next_point):
+        nonlocal min_backward_error
+        nonlocal last_three_guess
+        if math.fabs(f(next_point)) < min_backward_error:
+            four_guesses = sorted(last_three_guess + [next_point])
+            idx = four_guesses.find(next_point)
+            if idx in (1, 2):
+                if four_guesses[idx + 1] - four_guesses[idx - 1] <= (b - a) / 2:
+                    return (four_guesses[idx - 1], four_guesses[idx], four_guesses[idx + 1])
+        return None
+
+    def next_point_formula(a, b):
+        nonlocal min_backward_error
+        nonlocal last_three_guess
+        if last_three_guess is None:
+            c = (a + b) / 2
+            last_three_guess = [a, c, b]
+            min_backward_error = min(min_backward_error, math.fabs(f(c)))
+            return c
+        c = inverse_quadratic_interpolation_method(f, *last_three_guess, step_number=1)
+        res = criterion(c)
+        if res is not None:
+            last_three_guess = res
+            min_backward_error = min(min_backward_error, math.fabs(f(c)))
+            return c
+        c = secant_method(f, a, b, step_number=1)
+        res = criterion(c)
+        if res is not None:
+            last_three_guess = res
+            min_backward_error = min(min_backward_error, math.fabs(f(c)))
+            return c
+        c = bisection_method(f, a, b, step_number=1)
+        last_three_guess = [a, c, b]
+        min_backward_error = min(min_backward_error, math.fabs(f(c)))
+        return c
+
+    return __interval_method(f, next_point_formula, a, b, **kwargs)
