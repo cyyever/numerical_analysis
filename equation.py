@@ -76,3 +76,20 @@ def false_position_method(
         else:
             a = c
     return a
+
+
+def inverse_quadratic_interpolation_method(
+    f: Callable, a: float, b: float, c: float, **kwargs
+) -> float | None:
+    """A similar generalization of the Secant
+    Method to parabolas. However, the parabola is of form x = p(y) instead of y = p(x), as in Muller’s Method."""
+
+    def __formula(x_i, x_i_1, x_i_2):
+        q = f(x_i) / f(x_i_1)
+        r = f(x_i_2) / f(x_i_1)
+        s = f(x_i_2) / f(x_i)
+        return x_i_2 - (r * (r - q) * (x_i_2 - x_i_1) + (1 - r) * s * (x_i_2 - x_i)) / (
+            (q - 1) * (r - 1) * (s - 1)
+        )
+
+    return __n_guess_iteration(__formula, guesses=(a, b, c), **kwargs)
