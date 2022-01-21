@@ -1,15 +1,16 @@
 from typing import Callable
 
-epsilon = 1e-8
 
-
-def bisection_method(f: Callable, a: float, b: float) -> float | None:
+def __interval_method(
+    f: Callable, next_point_formula: Callable, a: float, b: float, epsilon=1e-8
+) -> float | None:
     """find a root of equation f in the interval [a,b]. Return None when no root is found."""
     assert a <= b
     if f(a) * f(b) > 0:
         return None
     while b - a > epsilon:
-        c = (a + b) / 2
+        c = next_point_formula(a, b)
+        # c = (a + b) / 2
         if f(c) == 0:
             return c
         if f(a) * f(c) < 0:
@@ -17,6 +18,18 @@ def bisection_method(f: Callable, a: float, b: float) -> float | None:
         else:
             a = c
     return a
+
+
+def bisection_method(f: Callable, a: float, b: float, **kwargs) -> float | None:
+    """find a root of equation f in the interval [a,b]. Return None when no root is found."""
+    return __interval_method(f, lambda a, b: (a + b) / 2, a, b, **kwargs)
+
+
+def false_position_method(f: Callable, a: float, b: float, **kwargs) -> float | None:
+    """find a root of equation f in the interval [a,b]. Combine bisection method and secant method. Return None when no root is found."""
+    return __interval_method(
+        f, lambda a, b: (b * f(a) - a * f(b)) / (f(a) - f(b)), a, b, **kwargs
+    )
 
 
 def __n_guess_iteration(f: Callable, guesses: tuple, step_number: int = 10) -> float:
@@ -58,24 +71,6 @@ def secant_method(f: Callable, x_0: float, x_1: float, **kwargs) -> float:
     return __n_guess_iteration(
         lambda a, b: b - f(b) * (b - a) / (f(b) - f(a)), guesses=(x_0, x_1), **kwargs
     )
-
-
-def false_position_method(
-    f: Callable, a: float, b: float, step_number: int
-) -> float | None:
-    """find a root of equation f in the interval [a,b]. Combine bisection method and secant method. Return None when no root is found."""
-    assert a <= b
-    if f(a) * f(b) > 0:
-        return None
-    for _ in range(step_number):
-        c = (b * f(a) - a * f(b)) / (f(a) - f(b))
-        if f(c) == 0:
-            return c
-        if f(a) * f(c) < 0:
-            b = c
-        else:
-            a = c
-    return a
 
 
 def inverse_quadratic_interpolation_method(
