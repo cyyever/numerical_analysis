@@ -16,7 +16,7 @@ def __interval_method(
         return None
     c = a
     for _ in range(step_number):
-        if b - a > epsilon:
+        if b - a < epsilon:
             break
         res = next_point_formula(a, b)
         match res:

@@ -1,7 +1,7 @@
 import math
 
 import pytest
-from equation import (bisection_method, false_position_method,
+from equation import (bisection_method, brend_method, false_position_method,
                       fixed_point_iteration,
                       inverse_quadratic_interpolation_method, n_th_root,
                       newton_method, secant_method, sqrt)
@@ -49,5 +49,12 @@ def test_false_position_method():
 def test_inverse_quadratic_interpolation_method():
     f = Polynomial([0, 3 / 2, -2, 1])
     x = inverse_quadratic_interpolation_method(f, -1, 0.5, 1)
+    assert x is not None
+    assert pytest.approx(x, 0)
+
+
+def test_brend_method():
+    f = Polynomial([0, 3 / 2, -2, 1])
+    x = brend_method(f, -1, 1)
     assert x is not None
     assert pytest.approx(x, 0)
