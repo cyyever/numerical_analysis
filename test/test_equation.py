@@ -54,7 +54,7 @@ def test_inverse_quadratic_interpolation_method():
 
 
 def test_brend_method():
-    f = Polynomial([0, 3 / 2, -2, 1])
+    f = Polynomial([-1, 1, 0, 1])
     x = brend_method(f, -1, 1)
     assert x is not None
     assert pytest.approx(x, 0)

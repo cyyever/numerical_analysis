@@ -112,8 +112,8 @@ def brend_method(f: Callable, a: float, b: float, **kwargs) -> float | None:
         nonlocal min_backward_error
         nonlocal last_three_guess
         if math.fabs(f(next_point)) < min_backward_error:
-            four_guesses = sorted(last_three_guess + [next_point])
-            idx = four_guesses.find(next_point)
+            four_guesses = sorted(list(last_three_guess) + [next_point])
+            idx = four_guesses.index(next_point)
             if idx in (1, 2):
                 if four_guesses[idx + 1] - four_guesses[idx - 1] <= (b - a) / 2:
                     return (four_guesses[idx - 1], four_guesses[idx], four_guesses[idx + 1])
@@ -130,16 +130,19 @@ def brend_method(f: Callable, a: float, b: float, **kwargs) -> float | None:
         c = inverse_quadratic_interpolation_method(f, *last_three_guess, step_number=1)
         res = criterion(c)
         if res is not None:
+            print("use inverse_quadratic_interpolation_method")
             last_three_guess = res
             min_backward_error = min(min_backward_error, math.fabs(f(c)))
             return c
         c = secant_method(f, a, b, step_number=1)
         res = criterion(c)
         if res is not None:
+            print("use secant_method")
             last_three_guess = res
             min_backward_error = min(min_backward_error, math.fabs(f(c)))
             return c
         c = bisection_method(f, a, b, step_number=1)
+        print("use bisection_method")
         last_three_guess = [a, c, b]
         min_backward_error = min(min_backward_error, math.fabs(f(c)))
         return c
