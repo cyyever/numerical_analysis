@@ -19,13 +19,24 @@ def bisection_method(f: Callable, a: float, b: float) -> float | None:
     return a
 
 
-def fixed_point_iteration(f: Callable, x: float, step_number: int = 10) -> float:
+def __n_guess_iteration(f: Callable, guesses: tuple, step_number: int = 10) -> float:
+    guess_num = len(guesses)
     for _ in range(step_number):
-        x = f(x)
-    return x
+        new_point = f(*guesses)
+        if new_point == guesses[-1]:
+            return new_point
+        if guess_num == 1:
+            guesses = (new_point,)
+        else:
+            guesses = (*guesses[1:], new_point)
+    return guesses[-1]
 
 
-def n_th_root(x: float, n: int, **kwargs: dict) -> float:
+def fixed_point_iteration(f: Callable, x: float, **kwargs) -> float:
+    return __n_guess_iteration(f, guesses=(x,), **kwargs)
+
+
+def n_th_root(x: float, n: int, **kwargs) -> float:
     assert n > 0
     if x == 0:
         return x
@@ -35,7 +46,7 @@ def n_th_root(x: float, n: int, **kwargs: dict) -> float:
     )
 
 
-def sqrt(x: float, **kwargs: dict) -> float:
+def sqrt(x: float, **kwargs) -> float:
     return n_th_root(x, 2, **kwargs)
 
 
@@ -43,27 +54,16 @@ def newton_method(f: Callable, derivative: Callable, x: float, **kwargs) -> floa
     return fixed_point_iteration(lambda a: a - f(a) / derivative(a), x, **kwargs)
 
 
-def __two_guess_iteration(
-    f: Callable, x_0: float, x_1: float, step_number: int = 10
-) -> float:
-    for _ in range(step_number):
-        tmp = x_1
-        x_1 = f(x_0, x_1)
-        x_1 = tmp
-    return x_1
-
-
-def secant_method(f: Callable, x_0: float, x_1: float, **kwargs: dict) -> float:
-    return __two_guess_iteration(
-        lambda a, b: b - f(b) * (b - a) / (f(b) - f(a)), x_0, x_1, **kwargs
+def secant_method(f: Callable, x_0: float, x_1: float, **kwargs) -> float:
+    return __n_guess_iteration(
+        lambda a, b: b - f(b) * (b - a) / (f(b) - f(a)), guesses=(x_0, x_1), **kwargs
     )
 
 
 def false_position_method(
     f: Callable, a: float, b: float, step_number: int
 ) -> float | None:
-    """find a root of equation f in the interval [a,b]. Combine bisection method and secant method."""
-    """Return None when no root is found."""
+    """find a root of equation f in the interval [a,b]. Combine bisection method and secant method. Return None when no root is found."""
     assert a <= b
     if f(a) * f(b) > 0:
         return None
