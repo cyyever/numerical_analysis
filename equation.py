@@ -1,6 +1,8 @@
 import math
 from typing import Callable
 
+from iterative_method import fixed_point_iteration, n_guess_iteration
+
 
 def __interval_method(
     f: Callable,
@@ -46,23 +48,6 @@ def false_position_method(f: Callable, a: float, b: float, **kwargs) -> float | 
     )
 
 
-def __n_guess_iteration(f: Callable, guesses: tuple, step_number: int = 10) -> float:
-    guess_num = len(guesses)
-    for _ in range(step_number):
-        new_point = f(*guesses)
-        if new_point == guesses[-1]:
-            return new_point
-        if guess_num == 1:
-            guesses = (new_point,)
-        else:
-            guesses = (*guesses[1:], new_point)
-    return guesses[-1]
-
-
-def fixed_point_iteration(f: Callable, x: float, **kwargs) -> float:
-    return __n_guess_iteration(f, guesses=(x,), **kwargs)
-
-
 def n_th_root(x: float, n: int, **kwargs) -> float:
     assert n > 0
     if x == 0:
@@ -82,7 +67,7 @@ def newton_method(f: Callable, derivative: Callable, x: float, **kwargs) -> floa
 
 
 def secant_method(f: Callable, x_0: float, x_1: float, **kwargs) -> float:
-    return __n_guess_iteration(
+    return n_guess_iteration(
         lambda a, b: b - f(b) * (b - a) / (f(b) - f(a)), guesses=(x_0, x_1), **kwargs
     )
 
@@ -101,7 +86,7 @@ def inverse_quadratic_interpolation_method(
             (q - 1) * (r - 1) * (s - 1)
         )
 
-    return __n_guess_iteration(__formula, guesses=(a, b, c), **kwargs)
+    return n_guess_iteration(__formula, guesses=(a, b, c), **kwargs)
 
 
 def brend_method(f: Callable, a: float, b: float, **kwargs) -> float | None:
