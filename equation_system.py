@@ -33,3 +33,19 @@ def successive_over_relaxation_method(A, b, w, **kwargs):
 def gauss_seidel_method(A, b, **kwargs):
     """Just like jabobi method, but use the most recently updated values"""
     return successive_over_relaxation_method(A, b, w=1, **kwargs)
+
+
+def cholesky_factorization(A):
+    """If A is a symmetric positive-definite n × n matrix, then there exists an upper triangular n × n matrix R such that A = (R^T)R."""
+    if not numpy.all(A == A.T):
+        raise RuntimeError("A is not symmetric")
+    R = numpy.zeros_like(A)
+    for i in range(A.shape[0]):
+        if A[i][i] <= 0:
+            raise RuntimeError("A is not positive definite")
+        R[i][i] = numpy.sqrt(A[i][i])
+        b = A[i, i + 1:]
+        R[i, i + 1:] = b / R[i][i]
+        b = b.reshape(A.shape[0] - i - 1, 1)
+        A[i + 1:, i + 1:] -= (b.T * b) / A[i][i]
+    return R

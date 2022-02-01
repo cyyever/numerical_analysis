@@ -1,7 +1,7 @@
 import numpy
 import pytest
-from equation_system import (gauss_seidel_method, jacobi_method,
-                             successive_over_relaxation_method)
+from equation_system import (cholesky_factorization, gauss_seidel_method,
+                             jacobi_method, successive_over_relaxation_method)
 
 
 def test_jacobi_method():
@@ -26,3 +26,9 @@ def test_successive_over_relaxation_method():
     x = successive_over_relaxation_method(A, b, w=1.1)
     assert x is not None
     assert pytest.approx(x, numpy.array([2, -1, 1]))
+
+
+def test_cholesky_factorization():
+    A = numpy.array([[4, -2, 2], [-2, 2, -4], [2, -4, 11]]).astype(float)
+    R = cholesky_factorization(A)
+    assert numpy.all(R == numpy.array([[2, -1, 1], [0, 1, -3], [0, 0, 1]]))
