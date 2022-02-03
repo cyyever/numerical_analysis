@@ -89,7 +89,7 @@ def inverse_quadratic_interpolation_method(
     return n_guess_iteration(__formula, guesses=(a, b, c), **kwargs)
 
 
-def brend_method(f: Callable, a: float, b: float, **kwargs) -> float | None:
+def brend_method(f: Callable, a: float, b: float, debug: bool = False, **kwargs) -> float | None:
     min_backward_error = min(math.fabs(f(a)), math.fabs(f(b)))
     last_three_guess = None
 
@@ -115,19 +115,22 @@ def brend_method(f: Callable, a: float, b: float, **kwargs) -> float | None:
         c = inverse_quadratic_interpolation_method(f, *last_three_guess, step_number=1)
         res = criterion(c)
         if res is not None:
-            print("use inverse_quadratic_interpolation_method")
+            if debug:
+                print("use inverse_quadratic_interpolation_method")
             last_three_guess = res
             min_backward_error = min(min_backward_error, math.fabs(f(c)))
             return c
         c = secant_method(f, a, b, step_number=1)
         res = criterion(c)
         if res is not None:
-            print("use secant_method")
+            if debug:
+                print("use secant_method")
             last_three_guess = res
             min_backward_error = min(min_backward_error, math.fabs(f(c)))
             return c
         c = bisection_method(f, a, b, step_number=1)
-        print("use bisection_method")
+        if debug:
+            print("use bisection_method")
         last_three_guess = [a, c, b]
         min_backward_error = min(min_backward_error, math.fabs(f(c)))
         return c
