@@ -4,17 +4,21 @@ import scipy.linalg
 from iterative_method import fixed_point_iteration
 
 
+def rayleigh_quotient(v, u):
+    return v.reshape(-1).dot(u.reshape(-1)) / (v.reshape(-1).dot(v.reshape(-1)))
+
+
 def power_iteration_method(A: np.ndarray, **kwargs) -> tuple:
     def f(v):
         v = A @ v
         eigenvalue = np.amax(np.absolute(v))
-        v = v / eigenvalue
-        return v
+        # normalization
+        return v / eigenvalue
 
     v = fixed_point_iteration(f=f, x=np.random.rand(A.shape[0], 1), **kwargs)
     # use Rayleigh quotient
     u = A @ v
-    eigenvalue = v.reshape(-1).dot(u.reshape(-1)) / (v.reshape(-1).dot(v.reshape(-1)))
+    eigenvalue = rayleigh_quotient(v, u)
     return (eigenvalue, u / eigenvalue)
 
 
@@ -25,13 +29,14 @@ def inverse_power_iteration_method(A: np.ndarray, shift: float = 0, **kwargs) ->
     def f(v):
         v = scipy.linalg.lu_solve((lu, piv), v)
         eigenvalue = np.amax(np.absolute(v))
+        # normalization
         v = v / eigenvalue
         return v
 
     v = fixed_point_iteration(f=f, x=np.random.rand(A.shape[0], 1), **kwargs)
     # use Rayleigh quotient
     u = scipy.linalg.lu_solve((lu, piv), v)
-    eigenvalue = v.reshape(-1).dot(u.reshape(-1)) / (v.reshape(-1).dot(v.reshape(-1)))
+    eigenvalue = rayleigh_quotient(v, u)
     eigenvalue = 1 / eigenvalue + shift
     return (eigenvalue, u / eigenvalue)
 
@@ -48,11 +53,12 @@ def rayleigh_quotient_iteration_method(
         u = scipy.linalg.solve(A - np.eye(A.shape[0]) * shift, v)
         eigenvalue = np.amax(np.absolute(v))
         shift = eigenvalue
+        # normalization
         return u / eigenvalue
 
     v = fixed_point_iteration(f=f, x=np.random.rand(A.shape[0], 1), **kwargs)
     # use Rayleigh quotient
     u = scipy.linalg.solve(A - np.eye(A.shape[0]) * shift, v)
-    eigenvalue = v.reshape(-1).dot(u.reshape(-1)) / (v.reshape(-1).dot(v.reshape(-1)))
+    eigenvalue = rayleigh_quotient(v, u)
     eigenvalue = 1 / eigenvalue + shift
     return (eigenvalue, u / eigenvalue)
