@@ -23,6 +23,7 @@ def successive_over_relaxation_method(A, b, w, **kwargs):
     numpy.fill_diagonal(L_U, 0)
 
     def f(x):
+        x = copy.deepcopy(x)
         for idx, x_idx in enumerate(x):
             x[idx] = (1 - w) * x_idx + w * ((b[idx] - L_U[idx] @ x) / diagonal[idx])
         return x

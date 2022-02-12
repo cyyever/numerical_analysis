@@ -3,7 +3,7 @@ from typing import Callable
 import numpy
 
 
-def n_guess_iteration(f: Callable, guesses: tuple, step_number: int = 10) -> float:
+def n_guess_iteration(f: Callable, guesses: tuple, step_number: int = 100) -> float:
     guess_num = len(guesses)
     for _ in range(step_number):
         new_point = f(*guesses)
