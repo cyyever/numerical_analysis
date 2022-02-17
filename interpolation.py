@@ -1,3 +1,6 @@
+import math
+from typing import Callable
+
 from polynomial import Polynomial
 
 
@@ -17,6 +20,15 @@ def lagrange_interpolating(points: list):
     return f
 
 
+def chebyshev_base_points(a: float, b: float, n: int, f: Callable):
+    """Get n base points from interval [a,b] for interpolation of f"""
+    base_points = []
+    for i in range(1, n + 1, 2):
+        x = (b - a) * math.cos(i * math.pi / (2 * n)) / 2 + (b + a) / 2
+        base_points.append((x, f(x)))
+    return base_points
+
+
 def newton_divided_difference(points: list):
     n = len(points)
     divided_differences = {}
@@ -34,19 +46,3 @@ def newton_divided_difference(points: list):
                 coefficients.append(divided_differences[x[j: j + i]])
 
     return Polynomial(coefficients, x[:-1])
-
-    # def f(z):
-    #     nonlocal x
-    #     y = 0
-    #     for x_point in reversed(x[:-1]):
-    #         print("x is ", x, "dif is", divided_differences[x], "x_point is", x_point)
-    #         y = (y + divided_differences[x]) * (z - x_point)
-    #         print("y=", y)
-    #         x = x[:-1]
-    #     assert len(x) == 1
-    #     print("x is ", x, "dif is", divided_differences[x])
-    #     y += divided_differences[x]
-    #     print("y=", y)
-    #     return y
-
-    # return f
