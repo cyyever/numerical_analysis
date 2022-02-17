@@ -1,7 +1,8 @@
 import math
 
 from interpolation import (chebyshev_base_points, lagrange_interpolating,
-                           newton_divided_difference)
+                           natural_cubic_spline, newton_divided_difference)
+from polynomial import Polynomial
 
 
 def test_lagrange_interpolating():
@@ -27,3 +28,9 @@ def test_chebyshev_base_points():
     assert math.fabs(math.sin(b / 2) - P(b / 2)) <= (
         (((b - a) / 2) ** n) / (math.factorial(n) * (2 ** (n - 1)))
     )
+
+
+def test_natural_cubic_spline():
+    polynomials = natural_cubic_spline([(0, 3), (1, -2), (2, 1)])
+    print(polynomials[0])
+    assert polynomials[0] == Polynomial([3.0, -7.0, 0.0, 2.0], [0.0] * 3)

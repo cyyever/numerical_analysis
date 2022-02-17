@@ -7,8 +7,30 @@ class Polynomial:
         assert coefficients
         if len(coefficients) == 1 and coefficients[0] == 0:
             raise RuntimeError("polynomial is 0")
-        self.__coefficients: tuple = coefficients
+        self.__coefficients: tuple = tuple(coefficients)
         self.__base_points: tuple | None = base_points
+        if self.__base_points is not None:
+            self.__base_points: tuple = tuple(base_points)
+
+    @property
+    def coefficients(self):
+        return self.__coefficients
+
+    @property
+    def base_points(self):
+        return self.__base_points
+
+    def __str__(self):
+        return f"coefficients:{self.coefficients} base_points:{self.base_points}"
+
+    def __hash__(self):
+        return hash(self.coefficients) ^ hash(self.base_points)
+
+    def __eq__(self, other):
+        return (
+            self.coefficients == other.coefficients
+            and self.base_points == other.base_points
+        )
 
     def derivative(self):
         assert self.__base_points is None
