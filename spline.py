@@ -1,3 +1,5 @@
+from typing import Callable
+
 import numpy
 
 from polynomial import Polynomial
@@ -36,3 +38,15 @@ def natural_cubic_spline(points: list) -> list:
             )
         )
     return polynomials
+
+
+def bezier_curve(points: list) -> Callable:
+    def f(t: float) -> float:
+        y = [p[1] for p in points]
+        while len(y) >= 2:
+            for i in range(len(y) - 1):
+                y[i] = (1 - t) * y[i] + t * y[i + 1]
+            y.pop()
+        return y[0]
+
+    return f
