@@ -8,9 +8,9 @@ class Polynomial:
         if len(coefficients) == 1 and coefficients[0] == 0:
             raise RuntimeError("polynomial is 0")
         self.__coefficients: tuple = tuple(coefficients)
-        self.__base_points: tuple | None = base_points
-        if self.__base_points is not None:
-            self.__base_points: tuple = tuple(base_points)
+        self.__base_points: tuple | None = (
+            tuple(base_points) if base_points is not None else None
+        )
 
     @property
     def coefficients(self):
