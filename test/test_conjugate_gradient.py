@@ -1,12 +1,14 @@
-import torch
-from cyy_torch_toolbox.device import get_device
-
+import numpy
+import pytest
 from conjugate_gradient import conjugate_gradient
 
 
 def test_conjugate_gradient():
-    device = get_device()
-    a = torch.tensor([[1.0, 2.0], [2.0, 1.0]]).to(device)
-    b = torch.tensor([3.0, 4.0]).to(device)
-    p = conjugate_gradient(a, b)
-    assert torch.all((a @ p).eq(b))
+    A = numpy.array([[2.0, 2.0], [2.0, 5.0]])
+    b = numpy.array([6.0, 3.0])
+    x = conjugate_gradient(A, b)
+    assert numpy.linalg.norm(A @ x - b) == pytest.approx(0, abs=0.0000001)
+    A = -A
+    b = -b
+    x = conjugate_gradient(A, b)
+    assert numpy.linalg.norm(A @ x - b) == pytest.approx(0, abs=0.0000001)
