@@ -50,6 +50,10 @@ class Polynomial:
 
         return Polynomial(result_coefficient)
 
+    def __truediv__(self, other):
+        result_coefficient = list(self.coefficients)
+        return Polynomial([c / other for c in result_coefficient])
+
     def __str__(self):
         return f"coefficients:{self.coefficients}"
 

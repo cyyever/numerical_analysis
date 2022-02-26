@@ -16,3 +16,6 @@ def test_polynomial():
     h = f * g
     assert h(1) == f(1) * g(1)
     assert h(2) == f(2) * g(2)
+    h = f / 2
+    assert h(1) == f(1) / 2
+    assert h(2) == f(2) / 2
