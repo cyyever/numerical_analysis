@@ -1,7 +1,7 @@
 import math
 from typing import Callable
 
-from polynomial import Polynomial
+from polynomial import PolynomialWithBasePoint
 
 
 def lagrange_interpolating(points: list) -> Callable:
@@ -29,7 +29,7 @@ def chebyshev_base_points(a: float, b: float, n: int, f: Callable) -> list:
     return base_points
 
 
-def newton_divided_difference(points: list) -> Polynomial:
+def newton_divided_difference(points: list) -> PolynomialWithBasePoint:
     n = len(points)
     divided_differences = {}
     for (x, y) in points:
@@ -45,4 +45,4 @@ def newton_divided_difference(points: list) -> Polynomial:
             if j == 0:
                 coefficients.append(divided_differences[x[j: j + i]])
 
-    return Polynomial(coefficients, x[:-1])
+    return PolynomialWithBasePoint(coefficients, x[:-1])

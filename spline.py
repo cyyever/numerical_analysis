@@ -2,7 +2,7 @@ from typing import Callable
 
 import numpy
 
-from polynomial import Polynomial
+from polynomial import PolynomialWithBasePoint
 
 
 def natural_cubic_spline(points: list) -> list:
@@ -32,7 +32,7 @@ def natural_cubic_spline(points: list) -> list:
         d = (c[i + 1] - c[i]) / (3 * x_delta[i])
 
         polynomials.append(
-            Polynomial(
+            PolynomialWithBasePoint(
                 coefficients=(a, b, c[i], d),
                 base_points=[points[i][0]] * 3,
             )
