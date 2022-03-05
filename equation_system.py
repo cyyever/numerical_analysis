@@ -1,6 +1,7 @@
 import copy
 
 import numpy
+import numpy.linalg
 
 from iterative_method import fixed_point_iteration
 
@@ -50,3 +51,19 @@ def cholesky_factorization(A):
         b = b.reshape(A.shape[0] - i - 1, 1)
         A[i + 1:, i + 1:] -= (b.T * b) / A[i][i]
     return R
+
+
+def classical_gram_schmidt_orthogonalization(A):
+    n = A.shape[1]
+    q = numpy.zeros_like(A)
+    r = numpy.zeros((n, n))
+
+    for j in range(n):
+        y = A[:, j]
+        for i in range(j):
+            r[i][j] = q[:, i] @ A[:, j]
+            y -= r[i][j] * q[:, i]
+            i += 1
+        r[j][j] = numpy.linalg.norm(y, 2)
+        q[:, j] = y / r[j][j]
+    return q, r
