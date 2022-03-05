@@ -1,7 +1,8 @@
 import numpy
 import pytest
 from equation_system import (cholesky_factorization, gauss_seidel_method,
-                             gram_schmidt_orthogonalization, jacobi_method,
+                             gram_schmidt_orthogonalization,
+                             householder_reflector_QR, jacobi_method,
                              successive_over_relaxation_method)
 
 
@@ -40,11 +41,19 @@ def test_cholesky_factorization():
 
 def test_gram_schmidt_orthogonalization():
     A = numpy.array([[1, -4], [2, 3], [2, 2]]).astype(float)
-    q, r = gram_schmidt_orthogonalization(A, use_classical_version=False)
+    Q, _ = gram_schmidt_orthogonalization(A, use_classical_version=False)
     assert numpy.linalg.norm(
-        q - numpy.array([[1 / 3, -14 / 15], [2 / 3, 1 / 3], [2 / 3, 2 / 15]])
+        Q - numpy.array([[1 / 3, -14 / 15], [2 / 3, 1 / 3], [2 / 3, 2 / 15]])
     ) == pytest.approx(0, abs=1e-6)
-    q, r = gram_schmidt_orthogonalization(A, use_classical_version=True)
+    Q, _ = gram_schmidt_orthogonalization(A, use_classical_version=True)
     assert numpy.linalg.norm(
-        q - numpy.array([[1 / 3, -14 / 15], [2 / 3, 1 / 3], [2 / 3, 2 / 15]])
+        Q - numpy.array([[1 / 3, -14 / 15], [2 / 3, 1 / 3], [2 / 3, 2 / 15]])
+    ) == pytest.approx(0, abs=1e-6)
+
+
+def test_householder_reflector_QR():
+    A = numpy.array([[3, 1], [4, 3]]).astype(float)
+    Q, _ = householder_reflector_QR(A)
+    assert numpy.linalg.norm(
+        Q - numpy.array([[-0.6, 0.8], [-0.8, -0.6]])
     ) == pytest.approx(0, abs=1e-6)

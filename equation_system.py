@@ -54,7 +54,7 @@ def cholesky_factorization(A):
 
 
 def gram_schmidt_orthogonalization(A, use_classical_version: bool = False):
-    """ Perform Gram-Schemidt orthogonalization"""
+    """Perform Gram-Schemidt orthogonalization"""
     n = A.shape[1]
     q = numpy.zeros_like(A)
     r = numpy.zeros((n, n))
@@ -71,3 +71,21 @@ def gram_schmidt_orthogonalization(A, use_classical_version: bool = False):
         r[j][j] = numpy.linalg.norm(y, 2)
         q[:, j] = y / r[j][j]
     return q, r
+
+
+def householder_reflector_QR(A):
+    m = A.shape[0]
+    n = A.shape[1]
+    Q = numpy.identity(m)
+    for i in range(n):
+        x = A[i:, i]
+        w = numpy.zeros_like(x)
+        w[0] = -numpy.sign(x[0]) * numpy.linalg.norm(x, 2)
+        v = w - x
+        H = numpy.identity(m)
+        H[i:, i:] = numpy.identity(m - i) - 2 * (
+            v.reshape(-1, 1) @ v.reshape(1, -1) / (v.dot(v))
+        )
+        Q = Q @ H
+        A = H @ A
+    return Q, A
