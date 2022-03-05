@@ -1,8 +1,7 @@
 import numpy
 import pytest
-from equation_system import (cholesky_factorization,
-                             classical_gram_schmidt_orthogonalization,
-                             gauss_seidel_method, jacobi_method,
+from equation_system import (cholesky_factorization, gauss_seidel_method,
+                             gram_schmidt_orthogonalization, jacobi_method,
                              successive_over_relaxation_method)
 
 
@@ -39,9 +38,13 @@ def test_cholesky_factorization():
     assert numpy.linalg.norm(R - numpy.array([[2, -1, 1], [0, 1, -3], [0, 0, 1]])) == 0
 
 
-def test_classical_gram_schmidt_orthogonalization():
+def test_gram_schmidt_orthogonalization():
     A = numpy.array([[1, -4], [2, 3], [2, 2]]).astype(float)
-    q, r = classical_gram_schmidt_orthogonalization(A)
+    q, r = gram_schmidt_orthogonalization(A, use_classical_version=False)
+    assert numpy.linalg.norm(
+        q - numpy.array([[1 / 3, -14 / 15], [2 / 3, 1 / 3], [2 / 3, 2 / 15]])
+    ) == pytest.approx(0, abs=1e-6)
+    q, r = gram_schmidt_orthogonalization(A, use_classical_version=True)
     assert numpy.linalg.norm(
         q - numpy.array([[1 / 3, -14 / 15], [2 / 3, 1 / 3], [2 / 3, 2 / 15]])
     ) == pytest.approx(0, abs=1e-6)

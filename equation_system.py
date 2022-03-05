@@ -53,7 +53,8 @@ def cholesky_factorization(A):
     return R
 
 
-def classical_gram_schmidt_orthogonalization(A):
+def gram_schmidt_orthogonalization(A, use_classical_version: bool = False):
+    """ Perform Gram-Schemidt orthogonalization"""
     n = A.shape[1]
     q = numpy.zeros_like(A)
     r = numpy.zeros((n, n))
@@ -61,7 +62,10 @@ def classical_gram_schmidt_orthogonalization(A):
     for j in range(n):
         y = A[:, j]
         for i in range(j):
-            r[i][j] = q[:, i] @ A[:, j]
+            if use_classical_version:
+                r[i][j] = q[:, i] @ A[:, j]
+            else:
+                r[i][j] = q[:, i] @ y
             y -= r[i][j] * q[:, i]
             i += 1
         r[j][j] = numpy.linalg.norm(y, 2)
