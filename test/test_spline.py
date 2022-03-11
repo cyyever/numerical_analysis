@@ -22,3 +22,10 @@ def test_bezier_curve():
             )
         ) == pytest.approx(0, abs=0.000000001)
         t += 0.1
+    f2 = f.degree_elevation()
+    assert numpy.all(f2(0) == numpy.array([1, 1]))
+    assert numpy.all(f2(1) == numpy.array([2, 2]))
+    t = 0
+    while t <= 1:
+        assert numpy.linalg.norm(f2(t) - f(t)) == pytest.approx(0, abs=0.000000001)
+        t += 0.1

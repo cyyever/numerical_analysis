@@ -50,3 +50,13 @@ class BezierCurve:
                 tmp[i] = (1 - t) * tmp[i] + t * tmp[i + 1]
             tmp.pop()
         return tmp[0]
+
+    def degree_elevation(self):
+        n = len(self.__control_points)
+        new_control_points = list(self.__control_points)
+        new_control_points.append(new_control_points[-1])
+        for i in range(1, n):
+            new_control_points[i] = (
+                i * self.__control_points[i - 1] + (n - i) * self.__control_points[i]
+            ) / n
+        return BezierCurve(new_control_points)
