@@ -1,7 +1,7 @@
 import numpy
 import pytest
 from polynomial import PolynomialWithBasePoint
-from spline import bezier_curve, natural_cubic_spline
+from spline import BezierCurve, natural_cubic_spline
 
 
 def test_natural_cubic_spline():
@@ -10,7 +10,7 @@ def test_natural_cubic_spline():
 
 
 def test_bezier_curve():
-    f = bezier_curve([(1, 1), (1, 3), (3, 3), (2, 2)])
+    f = BezierCurve([(1, 1), (1, 3), (3, 3), (2, 2)])
     assert numpy.all(f(0) == numpy.array([1, 1]))
     assert numpy.all(f(1) == numpy.array([2, 2]))
     t = 0

@@ -1,5 +1,3 @@
-from typing import Callable
-
 import numpy
 
 from polynomial import PolynomialWithBasePoint
@@ -40,15 +38,15 @@ def natural_cubic_spline(points: list) -> list:
     return polynomials
 
 
-def bezier_curve(points: list) -> Callable:
-    points = tuple(numpy.array(p) for p in points)
+class BezierCurve:
+    def __init__(self, control_points: list):
+        self.__control_points = tuple(numpy.array(p) for p in control_points)
 
-    def f(t: float):
-        tmp = list(points)
+    def __call__(self, t: float):
+        assert 0 <= t <= 1
+        tmp = list(self.__control_points)
         while len(tmp) >= 2:
             for i in range(len(tmp) - 1):
                 tmp[i] = (1 - t) * tmp[i] + t * tmp[i + 1]
             tmp.pop()
         return tmp[0]
-
-    return f
