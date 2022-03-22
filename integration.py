@@ -27,3 +27,16 @@ def composite_simpson_rule(f: Callable, a: float, b: float, m: int) -> float:
     for i in range(1, m):
         res += 2 * f(a + h * 2 * i)
     return res * h / 3
+
+
+def midpoint_rule(f: Callable, a: float, b: float) -> float:
+    h = b - a
+    return h * f(a + h / 2)
+
+
+def composite_midpoint_rule(f: Callable, a: float, b: float, m: int) -> float:
+    h = (b - a) / m
+    res: float = 0
+    for i in range(m):
+        res += midpoint_rule(f, a + h * i, a + h * (i + 1))
+    return res
