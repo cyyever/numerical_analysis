@@ -89,3 +89,41 @@ def householder_reflector_QR(A):
         Q = Q @ H
         A = H @ A
     return Q, A
+
+
+def broyden_method_1(F: callable, n: int, x=None, A=None, **kwargs):
+    if x is None:
+        x = numpy.random.rand(n, 1)
+    if A is None:
+        A = numpy.identity(n)
+
+    def f(x):
+        nonlocal A
+        new_x = x - numpy.linalg.inv(A) @ F(x)
+        x_delta = new_x - x
+        if numpy.all(x_delta == 0):
+            return new_x
+        F_delta = F(new_x) - F(x)
+        A = A + (F_delta - A @ x_delta) @ (x_delta.T) / x_delta.T.dot(x_delta)
+        return new_x
+
+    return fixed_point_iteration(f=f, x=x, **kwargs)
+
+
+def broyden_method_2(F: callable, n: int, x=None, B=None, **kwargs):
+    if x is None:
+        x = numpy.random.rand(n, 1)
+    if B is None:
+        B = numpy.identity(n)
+
+    def f(x):
+        nonlocal B
+        new_x = x - B @ F(x)
+        x_delta = new_x - x
+        if numpy.all(x_delta == 0):
+            return new_x
+        F_delta = F(new_x) - F(x)
+        B = B + ((x_delta - B @ F_delta) @ (x_delta.T) @ B) / (x_delta.T @ B @ F_delta)
+        return new_x
+
+    return fixed_point_iteration(f=f, x=x, **kwargs)

@@ -1,6 +1,7 @@
 import numpy
 import pytest
-from equation_system import (cholesky_factorization, gauss_seidel_method,
+from equation_system import (broyden_method_1, broyden_method_2,
+                             cholesky_factorization, gauss_seidel_method,
                              gram_schmidt_orthogonalization,
                              householder_reflector_QR, jacobi_method,
                              successive_over_relaxation_method)
@@ -57,3 +58,27 @@ def test_householder_reflector_QR():
     assert numpy.linalg.norm(
         Q - numpy.array([[-0.6, 0.8], [-0.8, -0.6]])
     ) == pytest.approx(0, abs=1e-6)
+
+
+def test_broyden_method_1():
+    def F(x):
+        u = x[0][0]
+        v = x[1][0]
+        return numpy.array([[v - u**3], [u**2 + v**2 - 1]])
+
+    x = broyden_method_1(F=F, x=numpy.array([[1.0], [2.0]]), n=2)
+    assert numpy.linalg.norm(x - numpy.array([[0.8260], [0.5636]])) == pytest.approx(
+        0, abs=1e-4
+    )
+
+
+def test_broyden_method_2():
+    def F(x):
+        u = x[0][0]
+        v = x[1][0]
+        return numpy.array([[v - u**3], [u**2 + v**2 - 1]])
+
+    x = broyden_method_2(F=F, x=numpy.array([[1.0], [2.0]]), n=2)
+    assert numpy.linalg.norm(x - numpy.array([[0.8260], [0.5636]])) == pytest.approx(
+        0, abs=1e-4
+    )
