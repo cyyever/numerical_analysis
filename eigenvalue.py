@@ -58,7 +58,6 @@ def rayleigh_quotient_iteration_method(
 
     v = fixed_point_iteration(f=f, x=np.random.rand(A.shape[0], 1), **kwargs)
     # use Rayleigh quotient
-    u = scipy.linalg.solve(A - np.eye(A.shape[0]) * shift, v)
+    u = A @ v
     eigenvalue = rayleigh_quotient(v, u)
-    eigenvalue = 1 / eigenvalue + shift
     return (eigenvalue, u / eigenvalue)
