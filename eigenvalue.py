@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.linalg
+from equantion_system import gram_schmidt_orthogonalization
 
 from iterative_method import fixed_point_iteration
 
@@ -61,3 +62,13 @@ def rayleigh_quotient_iteration_method(
     u = A @ v
     eigenvalue = rayleigh_quotient(v, u)
     return (eigenvalue, u / eigenvalue)
+
+
+def unshifted_QR(A: np.ndarray, k) -> tuple:
+    Q = np.eye(A.shape[0])
+    Qbar = Q
+    R = A
+    for _ in range(k):
+        Q, R = gram_schmidt_orthogonalization(R @ Q)
+        Qbar = Qbar @ Q
+    return Qbar, np.diag(R @ Q)
