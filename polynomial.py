@@ -7,7 +7,7 @@ class Polynomial:
         """the coefficients are from the lowest power to the highest power"""
         assert coefficients
         while coefficients and coefficients[-1] == 0:
-            coefficients.pop()
+            coefficients = coefficients[:-1]
         if not coefficients:
             coefficients = [0]
         self.__coefficients: tuple = tuple(coefficients)
@@ -15,6 +15,12 @@ class Polynomial:
     @property
     def coefficients(self):
         return self.__coefficients
+
+    def is_constant(self) -> bool:
+        return len(self.__coefficients) == 1
+
+    def degree(self) -> bool:
+        return len(self.__coefficients) - 1
 
     def __add__(self, other):
         coef_size = max(len(self.coefficients), len(other.coefficients))
@@ -51,10 +57,12 @@ class Polynomial:
         return Polynomial(result_coefficient)
 
     def __truediv__(self, other):
-        result_coefficient = list(self.coefficients)
-        return Polynomial([c / other for c in result_coefficient])
+        return Polynomial([c / other for c in self.coefficients])
 
     def __str__(self):
+        return f"coefficients:{self.coefficients}"
+
+    def __repr__(self):
         return f"coefficients:{self.coefficients}"
 
     def __hash__(self):
@@ -78,7 +86,6 @@ class Polynomial:
         for c in coefficients[1:]:
             y = y * x + c
         return y
-
 
 class PolynomialWithBasePoint:
     def __init__(self, coefficients: Sequence, base_points: Sequence):

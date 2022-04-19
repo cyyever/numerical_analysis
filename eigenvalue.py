@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.linalg
-from equantion_system import gram_schmidt_orthogonalization
 
+from equation_system import gram_schmidt_orthogonalization
 from iterative_method import fixed_point_iteration
 
 
