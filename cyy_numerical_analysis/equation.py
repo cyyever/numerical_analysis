@@ -33,7 +33,7 @@ def __interval_method(
             b = c
         else:
             a = c
-    return c
+    return next_point_formula(a, b)
 
 
 def bisection_method(f: Callable, a: float, b: float, **kwargs) -> float | None:
@@ -89,7 +89,9 @@ def inverse_quadratic_interpolation_method(
     return n_guess_iteration(__formula, guesses=(a, b, c), **kwargs)
 
 
-def brend_method(f: Callable, a: float, b: float, debug: bool = False, **kwargs) -> float | None:
+def brend_method(
+    f: Callable, a: float, b: float, debug: bool = False, **kwargs
+) -> float | None:
     min_backward_error = min(math.fabs(f(a)), math.fabs(f(b)))
     last_three_guess = None
 
@@ -101,7 +103,11 @@ def brend_method(f: Callable, a: float, b: float, debug: bool = False, **kwargs)
             idx = four_guesses.index(next_point)
             if idx in (1, 2):
                 if four_guesses[idx + 1] - four_guesses[idx - 1] <= (b - a) / 2:
-                    return (four_guesses[idx - 1], four_guesses[idx], four_guesses[idx + 1])
+                    return (
+                        four_guesses[idx - 1],
+                        four_guesses[idx],
+                        four_guesses[idx + 1],
+                    )
         return None
 
     def next_point_formula(a, b):

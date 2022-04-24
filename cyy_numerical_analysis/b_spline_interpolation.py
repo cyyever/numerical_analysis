@@ -2,7 +2,7 @@ import numpy
 from scipy.sparse import csc_matrix
 from scipy.sparse.linalg import spsolve
 
-from b_spline import BSpline, KnotVector
+from cyy_numerical_analysis.b_spline import BSpline, KnotVector
 
 
 def chord_length_parameterization(points: list, degree: int) -> list:

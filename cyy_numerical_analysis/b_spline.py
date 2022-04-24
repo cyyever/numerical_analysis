@@ -1,7 +1,7 @@
 import functools
 import math
 
-from polynomial import Polynomial
+from cyy_numerical_analysis.polynomial import Polynomial
 
 
 def limit(expr) -> float:
