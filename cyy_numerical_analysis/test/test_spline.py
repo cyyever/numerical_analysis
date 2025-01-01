@@ -1,5 +1,6 @@
 import numpy
 import pytest
+
 from cyy_numerical_analysis.polynomial import PolynomialWithBasePoint
 from cyy_numerical_analysis.spline import BezierCurve, natural_cubic_spline
 

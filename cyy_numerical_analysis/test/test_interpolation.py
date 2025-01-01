@@ -1,7 +1,10 @@
 import math
 
-from interpolation import (chebyshev_base_points, lagrange_interpolating,
-                           newton_divided_difference)
+from interpolation import (
+    chebyshev_base_points,
+    lagrange_interpolating,
+    newton_divided_difference,
+)
 
 
 def test_lagrange_interpolating():

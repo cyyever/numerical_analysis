@@ -1,5 +1,5 @@
 import functools
-from typing import Callable
+from collections.abc import Callable
 
 
 def trapezoid_rule(f: Callable, a: float, b: float) -> float:

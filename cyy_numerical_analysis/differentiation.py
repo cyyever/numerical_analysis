@@ -1,4 +1,4 @@
-from typing import Callable
+from collections.abc import Callable
 
 
 def two_point_forward_difference(f: Callable, x: float, h=None) -> float:

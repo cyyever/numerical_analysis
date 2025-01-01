@@ -1,10 +1,15 @@
 import numpy
 import pytest
-from equation_system import (broyden_method_1, broyden_method_2,
-                             cholesky_factorization, gauss_seidel_method,
-                             gram_schmidt_orthogonalization,
-                             householder_reflector_QR, jacobi_method,
-                             successive_over_relaxation_method)
+from equation_system import (
+    broyden_method_1,
+    broyden_method_2,
+    cholesky_factorization,
+    gauss_seidel_method,
+    gram_schmidt_orthogonalization,
+    householder_reflector_QR,
+    jacobi_method,
+    successive_over_relaxation_method,
+)
 
 
 def test_jacobi_method():

@@ -2,9 +2,11 @@ import functools
 
 import pytest
 from differentiation import (
-    richardson_extrapolation, three_point_centered_difference,
+    richardson_extrapolation,
+    three_point_centered_difference,
     three_point_centered_difference_for_second_derivative,
-    two_point_forward_difference)
+    two_point_forward_difference,
+)
 
 
 def test_two_point_forward_difference():

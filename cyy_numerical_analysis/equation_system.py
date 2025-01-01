@@ -2,7 +2,6 @@ import copy
 
 import numpy
 import numpy.linalg
-
 from iterative_method import fixed_point_iteration
 
 

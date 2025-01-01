@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import numpy
-
 from iterative_method import fixed_point_iteration
 
 

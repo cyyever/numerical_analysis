@@ -1,10 +1,17 @@
 import math
 
 import pytest
-from equation import (bisection_method, brend_method, false_position_method,
-                      fixed_point_iteration,
-                      inverse_quadratic_interpolation_method, n_th_root,
-                      newton_method, secant_method, sqrt)
+from equation import (
+    bisection_method,
+    brend_method,
+    false_position_method,
+    fixed_point_iteration,
+    inverse_quadratic_interpolation_method,
+    n_th_root,
+    newton_method,
+    secant_method,
+    sqrt,
+)
 from polynomial import Polynomial
 
 

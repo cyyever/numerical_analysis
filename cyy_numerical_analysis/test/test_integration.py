@@ -1,10 +1,16 @@
 import math
 
 import pytest
-from integration import (adaptive_quadrature, composite_midpoint_rule,
-                         composite_simpson_rule, composite_trapezoid_rule,
-                         romberg_integration, simpson_rule, three_point_rule,
-                         trapezoid_rule)
+from integration import (
+    adaptive_quadrature,
+    composite_midpoint_rule,
+    composite_simpson_rule,
+    composite_trapezoid_rule,
+    romberg_integration,
+    simpson_rule,
+    three_point_rule,
+    trapezoid_rule,
+)
 
 
 def test_trapezoid_rule():

@@ -1,7 +1,10 @@
 import numpy
 import pytest
-from conjugate_gradient import (conjugate_gradient, jacobi_preconditioner,
-                                preconditioned_conjugate_gradient)
+from conjugate_gradient import (
+    conjugate_gradient,
+    jacobi_preconditioner,
+    preconditioned_conjugate_gradient,
+)
 
 
 def test_conjugate_gradient():

@@ -1,5 +1,4 @@
 import numpy
-
 from polynomial import PolynomialWithBasePoint
 
 

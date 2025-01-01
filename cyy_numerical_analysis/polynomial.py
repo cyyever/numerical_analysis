@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from functools import lru_cache
-from typing import Sequence
 
 
 class Polynomial:
@@ -123,6 +123,6 @@ class PolynomialWithBasePoint:
         coefficients: tuple = tuple(reversed(self.__coefficients))
         y = coefficients[0]
         base_points = reversed(self.__base_points)
-        for c, base_point in zip(coefficients[1:], base_points):
+        for c, base_point in zip(coefficients[1:], base_points, strict=False):
             y = y * (x - base_point) + c
         return y
