@@ -16,10 +16,7 @@ def n_guess_iteration(f: Callable, guesses: tuple, step_number: int = 100) -> fl
                 if res:
                     return new_point
 
-        if guess_num == 1:
-            guesses = (new_point,)
-        else:
-            guesses = (*guesses[1:], new_point)
+        guesses = (new_point,) if guess_num == 1 else (*guesses[1:], new_point)
     return guesses[-1]
 
 

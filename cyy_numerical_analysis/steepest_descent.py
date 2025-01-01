@@ -24,10 +24,7 @@ def steepest_descent_general(
         q = A_product_func(r)
         alpha = delta / (r @ q)
         x = x + alpha * r
-        if i % 50 == 0:
-            r = b - A_product_func(x)
-        else:
-            r = r - alpha * q
+        r = b - A_product_func(x) if i % 50 == 0 else r - alpha * q
         delta = r @ r
         if torch.sqrt(delta) < epsilon:
             break

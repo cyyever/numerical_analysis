@@ -189,10 +189,7 @@ class KnotVector:
                         ),
                     )
                 )
-            if result is None:
-                result = tmp
-            else:
-                result = simplify(("+", result, tmp))
+            result = tmp if result is None else simplify(("+", result, tmp))
         for part_derivative_degree in range(derivative_degree + 1):
             if derivative_degree - part_derivative_degree > 1:
                 continue
