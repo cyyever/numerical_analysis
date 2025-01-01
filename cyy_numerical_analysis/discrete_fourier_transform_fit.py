@@ -9,7 +9,7 @@ def DFF_interpolation(f: Callable, n: int, c: float, d: float) -> Callable:
     a = np.real(dff_y)
     b = np.imag(dff_y)
 
-    def P(t: float):
+    def P(t: float) -> float:
         u = (t - c) / (d - c)
         r = a[0] + a[n // 2] * np.cos(n * np.pi * u)
         for k in range(1, n // 2):

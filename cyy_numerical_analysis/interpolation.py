@@ -32,17 +32,17 @@ def chebyshev_base_points(a: float, b: float, n: int, f: Callable) -> list:
 def newton_divided_difference(points: list) -> PolynomialWithBasePoint:
     n = len(points)
     divided_differences = {}
-    for (x, y) in points:
+    for x, y in points:
         divided_differences[(x,)] = y
     x = tuple(x for x, _ in points)
     coefficients = [divided_differences[(points[0][0],)]]
     for i in range(2, n + 1):
         for j in range(n - i + 1):
-            divided_differences[x[j: j + i]] = (
-                divided_differences[x[j + 1: j + i]]
-                - divided_differences[x[j: j + i - 1]]
+            divided_differences[x[j : j + i]] = (
+                divided_differences[x[j + 1 : j + i]]
+                - divided_differences[x[j : j + i - 1]]
             ) / (x[j + i - 1] - x[j])
             if j == 0:
-                coefficients.append(divided_differences[x[j: j + i]])
+                coefficients.append(divided_differences[x[j : j + i]])
 
     return PolynomialWithBasePoint(coefficients, x[:-1])

@@ -77,5 +77,7 @@ def B_spline_interpolation(
     Y = spsolve(sparse_A, b2).tolist()
 
     return BSpline(
-        points=list(zip(X, Y, strict=False)), degree=3, knot_vector=knot_vector.get_raw_kot_vector()
+        points=list(zip(X, Y, strict=False)),
+        degree=3,
+        knot_vector=knot_vector.get_raw_kot_vector(),
     )

@@ -6,7 +6,7 @@ from cyy_numerical_analysis.polynomial import Polynomial
 
 def limit(expr) -> float:
     match expr:
-        case(p, q):
+        case (p, q):
             p_coefficients = p.coefficients
             q_coefficients = q.coefficients
             while (
@@ -43,10 +43,10 @@ def simplify(expr) -> tuple[Polynomial, Polynomial]:
             return (Polynomial([expr]), Polynomial([1]))
         case Polynomial():
             return (expr, Polynomial([1]))
-        case(op, a, b):
+        case (op, a, b):
             expr = (op, simplify(a), simplify(b))
     match expr:
-        case(op, (p1, q1), (p2, q2)):
+        case (op, (p1, q1), (p2, q2)):
             match op:
                 case "+":
                     expr = (p1 * q2 + p2 * q1, q1 * q2)
@@ -57,7 +57,7 @@ def simplify(expr) -> tuple[Polynomial, Polynomial]:
                 case "/":
                     expr = (p1 * q2, q1 * p2)
     match expr:
-        case(p, q):
+        case (p, q):
             p_coefficients = p.coefficients
             q_coefficients = q.coefficients
             while (
@@ -247,7 +247,7 @@ class BSpline:
         assert len(knot_vector) == len(points) + degree + 1
         point_dimension = 1
         match points[0]:
-            case[*_]:
+            case [*_]:
                 point_dimension = len(points[0])
 
         self.__point_dimension = point_dimension

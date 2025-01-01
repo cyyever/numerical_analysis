@@ -87,6 +87,7 @@ class Polynomial:
             y = y * x + c
         return y
 
+
 class PolynomialWithBasePoint:
     def __init__(self, coefficients: Sequence, base_points: Sequence):
         assert coefficients

@@ -45,10 +45,10 @@ def cholesky_factorization(A):
         if A[i][i] <= 0:
             raise RuntimeError("A is not positive definite")
         R[i][i] = numpy.sqrt(A[i][i])
-        b = A[i, i + 1:]
-        R[i, i + 1:] = b / R[i][i]
+        b = A[i, i + 1 :]
+        R[i, i + 1 :] = b / R[i][i]
         b = b.reshape(A.shape[0] - i - 1, 1)
-        A[i + 1:, i + 1:] -= (b.T * b) / A[i][i]
+        A[i + 1 :, i + 1 :] -= (b.T * b) / A[i][i]
     return R
 
 

@@ -1,9 +1,11 @@
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 
 import numpy
 
 
-def n_guess_iteration(f: Callable, guesses: tuple, step_number: int = 100) -> float:
+def n_guess_iteration(
+    f: Callable, guesses: Sequence[float], step_number: int = 100
+) -> float:
     guess_num = len(guesses)
     for _ in range(step_number):
         new_point = f(*guesses)
