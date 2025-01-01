@@ -2,9 +2,10 @@ import math
 from collections.abc import Callable
 
 from polynomial import PolynomialWithBasePoint
+from typing import Sequence
 
 
-def lagrange_interpolating(points: list) -> Callable:
+def lagrange_interpolating(points: Sequence[tuple[float, float]]) -> Callable:
     def f(x):
         y = 0
         for i, (x_1, y_1) in enumerate(points):
@@ -29,12 +30,14 @@ def chebyshev_base_points(a: float, b: float, n: int, f: Callable) -> list:
     return base_points
 
 
-def newton_divided_difference(points: list) -> PolynomialWithBasePoint:
+def newton_divided_difference(
+    points: Sequence[tuple[float, float]],
+) -> PolynomialWithBasePoint:
     n = len(points)
-    divided_differences = {}
-    for x, y in points:
-        divided_differences[(x,)] = y
-    x = tuple(x for x, _ in points)
+    divided_differences: dict[tuple, float] = {}
+    for p in points:
+        divided_differences[(p[0],)] = p[1]
+    x: tuple = tuple(p[0] for p in points)
     coefficients = [divided_differences[(points[0][0],)]]
     for i in range(2, n + 1):
         for j in range(n - i + 1):

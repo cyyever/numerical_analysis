@@ -1,9 +1,10 @@
 from collections.abc import Sequence
 from functools import lru_cache
+from typing import Self
 
 
 class Polynomial:
-    def __init__(self, coefficients: Sequence):
+    def __init__(self, coefficients: Sequence[float]):
         """the coefficients are from the lowest power to the highest power"""
         assert coefficients
         while coefficients and coefficients[-1] == 0:
@@ -13,13 +14,13 @@ class Polynomial:
         self.__coefficients: tuple = tuple(coefficients)
 
     @property
-    def coefficients(self):
+    def coefficients(self) -> tuple:
         return self.__coefficients
 
     def is_constant(self) -> bool:
         return len(self.__coefficients) == 1
 
-    def degree(self) -> bool:
+    def degree(self) -> int:
         return len(self.__coefficients) - 1
 
     def __add__(self, other):
@@ -68,10 +69,10 @@ class Polynomial:
     def __hash__(self):
         return hash(self.coefficients)
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.coefficients == other.coefficients
 
-    def derivative(self):
+    def derivative(self) -> Self:
         return Polynomial(
             coefficients=[idx * coef for idx, coef in enumerate(self.__coefficients)][
                 1:
@@ -79,7 +80,7 @@ class Polynomial:
         )
 
     @lru_cache
-    def __call__(self, x):
+    def __call__(self, x: float) -> float:
         # Nested multiplication
         coefficients: tuple = tuple(reversed(self.__coefficients))
         y = coefficients[0]
@@ -89,21 +90,23 @@ class Polynomial:
 
 
 class PolynomialWithBasePoint:
-    def __init__(self, coefficients: Sequence, base_points: Sequence):
+    def __init__(
+        self, coefficients: Sequence[float], base_points: Sequence[float]
+    ) -> None:
         assert coefficients
         while coefficients and coefficients[-1] == 0:
-            coefficients.pop()
+            coefficients = coefficients[:-1]
         if not coefficients:
             coefficients = [0]
         self.__coefficients: tuple = tuple(coefficients)
         self.__base_points: tuple = tuple(base_points)
 
     @property
-    def coefficients(self):
+    def coefficients(self) -> tuple:
         return self.__coefficients
 
     @property
-    def base_points(self):
+    def base_points(self) -> tuple:
         return self.__base_points
 
     def __str__(self):
@@ -119,7 +122,7 @@ class PolynomialWithBasePoint:
         )
 
     @lru_cache
-    def __call__(self, x):
+    def __call__(self, x: float) -> float:
         # Nested multiplication
         coefficients: tuple = tuple(reversed(self.__coefficients))
         y = coefficients[0]

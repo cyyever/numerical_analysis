@@ -57,6 +57,7 @@ composite_midpoint_rule = functools.partial(
 
 def romberg_integration(f: Callable, a: float, b: float, step: int) -> float:
     R: list[float] = [(b - a) * (f(a) + f(b)) / 2]
+    assert step >= 1
     for j in range(2, step + 1):
         next_R: list[float] = [0] * j
         h = (b - a) / (2 ** (j - 1))
@@ -71,7 +72,7 @@ def romberg_integration(f: Callable, a: float, b: float, step: int) -> float:
                 4 ** (k - 1) - 1
             )
         R = next_R
-    return next_R[step - 1]
+    return R[step - 1]
 
 
 def adaptive_quadrature(f: Callable, a: float, b: float, tol: float):

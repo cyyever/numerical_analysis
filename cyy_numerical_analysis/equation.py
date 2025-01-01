@@ -74,7 +74,7 @@ def secant_method(f: Callable, x_0: float, x_1: float, **kwargs) -> float:
 
 def inverse_quadratic_interpolation_method(
     f: Callable, a: float, b: float, c: float, **kwargs
-) -> float | None:
+) -> float:
     """A similar generalization of the Secant
     Method to parabolas. However, the parabola is of form x = p(y) instead of y = p(x), as in Muller’s Method."""
 
@@ -93,29 +93,32 @@ def brend_method(
     f: Callable, a: float, b: float, debug: bool = False, **kwargs
 ) -> float | None:
     min_backward_error = min(math.fabs(f(a)), math.fabs(f(b)))
-    last_three_guess = None
+    last_three_guess: None | tuple[float, float, float] = None
 
     def criterion(next_point):
         nonlocal min_backward_error
         nonlocal last_three_guess
         if math.fabs(f(next_point)) < min_backward_error:
+            assert last_three_guess is not None
             four_guesses = sorted(list(last_three_guess) + [next_point])
             idx = four_guesses.index(next_point)
-            if idx in (1, 2):
-                if four_guesses[idx + 1] - four_guesses[idx - 1] <= (b - a) / 2:
-                    return (
-                        four_guesses[idx - 1],
-                        four_guesses[idx],
-                        four_guesses[idx + 1],
-                    )
+            if (
+                idx in (1, 2)
+                and four_guesses[idx + 1] - four_guesses[idx - 1] <= (b - a) / 2
+            ):
+                return (
+                    four_guesses[idx - 1],
+                    four_guesses[idx],
+                    four_guesses[idx + 1],
+                )
         return None
 
-    def next_point_formula(a, b):
+    def next_point_formula(a: float, b: float):
         nonlocal min_backward_error
         nonlocal last_three_guess
         if last_three_guess is None:
             c = (a + b) / 2
-            last_three_guess = [a, c, b]
+            last_three_guess = (a, c, b)
             min_backward_error = min(min_backward_error, math.fabs(f(c)))
             return c
         c = inverse_quadratic_interpolation_method(f, *last_three_guess, step_number=1)
@@ -137,7 +140,7 @@ def brend_method(
         c = bisection_method(f, a, b, step_number=1)
         if debug:
             print("use bisection_method")
-        last_three_guess = [a, c, b]
+        last_three_guess = (a, c, b)
         min_backward_error = min(min_backward_error, math.fabs(f(c)))
         return c
 
